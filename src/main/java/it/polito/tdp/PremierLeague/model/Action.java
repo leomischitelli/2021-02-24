@@ -1,130 +1,58 @@
 package it.polito.tdp.PremierLeague.model;
 
 public class Action {
-	Integer playerID;
-	Integer matchID;
-	Integer teamID;
-	Integer starts;
-	Integer goals;
-	Integer timePlayed;
-	Integer redCards;
-	Integer yellowCards;
-	Integer totalSuccessfulPassesAll;
-	Integer totalUnsuccessfulPassesAll;
-	Integer assists;
-	Integer totalFoulsConceded;
-	Integer offsides;
+	private Player player;
+	private Integer matchID;
+	private Integer teamID;
+	private Integer timePlayed;
+	private Integer totalSuccessfulPassesAll;
+	private Integer assists;
+	private double efficiency;
 	
-	public Action(Integer playerID, Integer matchID, Integer teamID, Integer starts, Integer goals, Integer timePlayed,
-			Integer redCards, Integer yellowCards, Integer totalSuccessfulPassesAll, Integer totalUnsuccessfulPassesAll,
-			Integer assists, Integer totalFoulsConceded, Integer offsides) {
+	public Action(Player player, Integer matchID, Integer teamID, Integer timePlayed, Integer totalSuccessfulPassesAll, Integer assists) {
 		super();
-		this.playerID = playerID;
+		this.player = player;
 		this.matchID = matchID;
 		this.teamID = teamID;
-		this.starts = starts;
-		this.goals = goals;
 		this.timePlayed = timePlayed;
-		this.redCards = redCards;
-		this.yellowCards = yellowCards;
 		this.totalSuccessfulPassesAll = totalSuccessfulPassesAll;
-		this.totalUnsuccessfulPassesAll = totalUnsuccessfulPassesAll;
 		this.assists = assists;
-		this.totalFoulsConceded = totalFoulsConceded;
-		this.offsides = offsides;
+		calcolaEfficienza();
+	}
+	private void calcolaEfficienza() {
+		Double efficienza =  ( (double) this.totalSuccessfulPassesAll + this.assists) / this.timePlayed;
+		this.efficiency = efficienza;
 	}
 	
-	
-	public Integer getPlayerID() {
-		return playerID;
+	public double getEfficiency() {
+		return efficiency;
 	}
-	public void setPlayerID(Integer playerID) {
-		this.playerID = playerID;
+	public Player getPlayer() {
+		return player;
 	}
 	public Integer getMatchID() {
 		return matchID;
 	}
-	public void setMatchID(Integer matchID) {
-		this.matchID = matchID;
-	}
 	public Integer getTeamID() {
 		return teamID;
-	}
-	public void setTeamID(Integer teamID) {
-		this.teamID = teamID;
-	}
-	public Integer getStarts() {
-		return starts;
-	}
-	public void setStarts(Integer starts) {
-		this.starts = starts;
-	}
-	public Integer getGoals() {
-		return goals;
-	}
-	public void setGoals(Integer goals) {
-		this.goals = goals;
 	}
 	public Integer getTimePlayed() {
 		return timePlayed;
 	}
-	public void setTimePlayed(Integer timePlayed) {
-		this.timePlayed = timePlayed;
-	}
-	public Integer getRedCards() {
-		return redCards;
-	}
-	public void setRedCards(Integer redCards) {
-		this.redCards = redCards;
-	}
-	public Integer getYellowCards() {
-		return yellowCards;
-	}
-	public void setYellowCards(Integer yellowCards) {
-		this.yellowCards = yellowCards;
-	}
 	public Integer getTotalSuccessfulPassesAll() {
 		return totalSuccessfulPassesAll;
-	}
-	public void setTotalSuccessfulPassesAll(Integer totalSuccessfulPassesAll) {
-		this.totalSuccessfulPassesAll = totalSuccessfulPassesAll;
-	}
-	public Integer getTotalUnsuccessfulPassesAll() {
-		return totalUnsuccessfulPassesAll;
-	}
-	public void setTotalUnsuccessfulPassesAll(Integer totalUnsuccessfulPassesAll) {
-		this.totalUnsuccessfulPassesAll = totalUnsuccessfulPassesAll;
 	}
 	public Integer getAssists() {
 		return assists;
 	}
-	public void setAssists(Integer assists) {
-		this.assists = assists;
-	}
-	public Integer getTotalFoulsConceded() {
-		return totalFoulsConceded;
-	}
-	public void setTotalFoulsConceded(Integer totalFoulsConceded) {
-		this.totalFoulsConceded = totalFoulsConceded;
-	}
-	public Integer getOffsides() {
-		return offsides;
-	}
-	public void setOffsides(Integer offsides) {
-		this.offsides = offsides;
-	}
-
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((matchID == null) ? 0 : matchID.hashCode());
-		result = prime * result + ((playerID == null) ? 0 : playerID.hashCode());
+		result = prime * result + ((player == null) ? 0 : player.hashCode());
 		return result;
 	}
-
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -139,20 +67,22 @@ public class Action {
 				return false;
 		} else if (!matchID.equals(other.matchID))
 			return false;
-		if (playerID == null) {
-			if (other.playerID != null)
+		if (player == null) {
+			if (other.player != null)
 				return false;
-		} else if (!playerID.equals(other.playerID))
+		} else if (!player.equals(other.player))
 			return false;
 		return true;
 	}
-
-
 	@Override
 	public String toString() {
-		return "Action [playerID=" + playerID + ", matchID=" + matchID + ", starts=" + starts + ", goals=" + goals
-				+ ", timePlayed=" + timePlayed + "]";
+		return player.getName() + ": " + efficiency;
 	}
+	
+	
+	
+	
+	
 	
 	
 }

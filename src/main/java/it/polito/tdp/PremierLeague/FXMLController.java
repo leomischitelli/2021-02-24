@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.PremierLeague.model.Match;
 import it.polito.tdp.PremierLeague.model.Model;
+import it.polito.tdp.PremierLeague.model.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -47,16 +48,54 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	Match match = cmbMatch.getValue();
+    	if(match == null) {
+    		txtResult.setText("Selezionare un match prima di proseguire!");
+    		return;
+    	}
+    	this.model.creaGrafo(match);
+    	txtResult.setText("Grafo creato!\nNumero vertici: " + model.getNumeroVertici());
+		txtResult.appendText("\nNumero archi: " + model.getNumeroArchi());
     	
     }
 
     @FXML
-    void doGiocatoreMigliore(ActionEvent event) {    	
+    void doGiocatoreMigliore(ActionEvent event) { 
+    	
+    	try {
+    		
+    		Player player = this.model.getBestPlayer();
+    		txtResult.appendText("\nGiocatore migliore: " + this.model.getBestPlayer() + " con delta: " + Double.toString(this.model.getBestEffiency()));
+    		
+    	} catch (NullPointerException e) {
+    		txtResult.setText("Creare il grafo di proseguire!");
+    		e.printStackTrace();
+    		return;
+    	}
+    	
     	
     }
     
     @FXML
     void doSimula(ActionEvent event) {
+    	
+    	try {
+    		int numAzioni = Integer.parseInt(txtN.getText());
+    		Match match = cmbMatch.getValue();
+    		this.model.simula(match, numAzioni);
+    		
+    		txtResult.appendText("\nRisultato simulazione: " + match.getTeamHomeNAME() + "-" + match.getTeamAwayNAME() + " ");
+    		txtResult.appendText(this.model.getHomeGoals() + "-" + this.model.getAwayGoals());
+    		txtResult.appendText("\nEspulsi: " + this.model.getEspulsiHome() + "-" + this.model.getEspulsiAway());
+    		
+    	} catch (NumberFormatException e) {
+    		e.printStackTrace();
+    		txtResult.setText("Inserire un numero intero di azioni da simulare!");
+    		return;
+    	} catch (NullPointerException e) {
+    		e.printStackTrace();
+    		txtResult.setText("Costruire grafo prima di simulare!");
+    	}
 
     }
 
@@ -73,5 +112,6 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	cmbMatch.getItems().addAll(this.model.listAllMatches());
     }
 }
